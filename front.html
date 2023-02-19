@@ -1,0 +1,70 @@
+<div id="cloze-original" hidden="">{{Text}}</div>
+<div id="cloze-anki-rendered" hidden="">{{cloze:Text}}</div>
+<div id="cloze-overlapping-config" hidden="">{{Overlapping}}</div>
+<div id="cloze-js-rendered"></div>
+
+<script>
+  // This ceremony makes sure the render function is run exactly once:
+  (function() {
+    var alreadyRendered = false;
+
+    function render() {
+      if (alreadyRendered) return;
+      alreadyRendered = true;
+
+      var config = document.getElementById("cloze-overlapping-config").innerText.split(/[,\s|.]+/);
+      var leadingClozes = config[0] === "0" ? 0 : (+config[0] || 1);
+      var followingClozes = +config[1] || 0;
+      var showAllClozes = (config[2] || "true").toLowerCase() === "true"; // Set to false to omit, e.g. for long lyrics/poems
+      var revealAllClozes = (config[3] || "false").toLowerCase() === "true"; // On the back, reveal other clozes we didnʼt ask for?
+      var revealAllCustomPlaceholders = (config[4] || "false").toLowerCase() === "true";
+
+      var divOriginal = document.getElementById("cloze-original");
+      var divJsRendered = document.getElementById("cloze-js-rendered");
+
+      var currentCloze = +(document.body.className.match(/(^|\s)card(\d+)(\s|$)/)[2] || 0);
+
+      var allClozes = (function(){
+        var allMatches = divOriginal.innerHTML.match(/\{\{c\d+::.*?\}\}/g);
+        var res = {};
+        for (var i = 0; i < allMatches.length; i++) {
+          var match = allMatches[i].match(/\{\{c(\d+)::(.*?)(::(.*?))?\}\}/);
+          res[+match[1]] = {orig: allMatches[i], content: match[2], placeholder: match[4] ? match[4] : "..."};
+        }
+        return res;
+      })();
+
+      var isBackSide = document.getElementById("cloze-is-back") ? true : false;
+
+      var question = divOriginal.innerHTML;
+      for (var i in allClozes) {
+        var replacement = "";
+        var markBlue = false;
+        var needle = allClozes[i].orig;
+        if (i == currentCloze) {
+          markBlue = true;
+          replacement = isBackSide ? allClozes[i].content : "[" + allClozes[i].placeholder + "]";
+        } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes)
+          replacement = allClozes[i].content;
+        else if (showAllClozes)
+          replacement = (isBackSide && revealAllClozes) ? allClozes[i].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].placeholder : "...") + "]";
+        else {
+          replacement = "";
+          // Also get rid of following new lines, commas, dots, etc.
+          needle = new RegExp("\\{\\{c" + i + "::.*?\\}\\}(<br>|[\\s,.])*", "g");
+        }
+        question = question.replace(needle, (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : ""));
+      }
+
+      divJsRendered.innerHTML = question;
+    }
+
+    function delayedRender() {
+      window.setTimeout(render, 1);
+    };
+
+    window.onload = render;
+    if (document.readyState === "complete") delayedRender();
+    else document.addEventListener("DOMContentLoaded", delayedRender);
+  })();
+</script>
