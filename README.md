@@ -6,6 +6,8 @@ I got a bit confused with the original [Cloze Overlapper](https://github.com/glu
 
 Here is a pure JavaScript version that you can paste into your card templates. It has been tested to work on Anki (desktop), and AnkiDroid. I assume it should work everywhere indefinitely, as it's written in JavaScript only.
 
+Reddit thread: https://old.reddit.com/r/Anki/comments/116nky2/simple_cloze_overlapper_template_for_anki_21/
+
 A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from below, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called “Overlapping”.
 
 The options (separated by space, comma, pipe, etc.) are:
