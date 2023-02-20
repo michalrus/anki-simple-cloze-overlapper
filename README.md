@@ -16,7 +16,7 @@ The options (separated by space, comma, pipe, etc.) are:
 2. (default: `0`) The number of following clozes.
 3. (default: `true`) Whether to show all clozes – set to false to omit them, e.g. for long lyrics/poems.
 4. (default: `false`) Whether to reveal all clozes on the back (the ones we didn't ask for).
-5. (default: `false`) Whether to reveal all user-defined hits (placeholders).
+5. (default: `false`) Whether to reveal all user-defined hints (placeholders).
 
 I hope the recording will be self-explanatory! The last two modes seem odd to me, but they were trivial to add, maybe someone will find them useful.
 
