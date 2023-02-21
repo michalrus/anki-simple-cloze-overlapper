@@ -18,7 +18,7 @@ The options (separated by space, comma, pipe, etc.) are:
 4. (default: `false`) Whether to reveal all clozes on the back (the ones we didn't ask for).
 5. (default: `false`) Whether to reveal all user-defined hints (placeholders).
 
-If you need an extra card that asks you for all the clozes at once, add another cloze with an unused number and `ask-all` in its content. E.g. `{{c99::ask-all}}`` – as in the recording (thanks to `/u/Spiritual_Issue7174`).
+If you need an extra card that asks you for all the clozes at once, add another cloze with an unused number and `ask-all` in its content. E.g. `{{c99::ask-all}}` – as in the recording (thanks to `/u/Spiritual_Issue7174`).
 
 I hope the recording will be self-explanatory! The last two modes seem odd to me, but they were trivial to add, maybe someone will find them useful.
 
