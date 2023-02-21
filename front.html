@@ -29,7 +29,7 @@
         var res = {};
         for (var i = 0; i < allMatches.length; i++) {
           var match = allMatches[i].match(/\{\{c(\d+)::(.*?)(::(.*?))?\}\}/);
-          res[+match[1]] = {orig: allMatches[i], content: match[2], placeholder: match[4] ? match[4] : "..."};
+          res[+match[1]] = {orig: allMatches[i], content: match[2], placeholder: match[4] ? match[4] : "...", askAll: match[2] === "ask-all"};
         }
         return res;
       })();
@@ -41,12 +41,14 @@
         var replacement = "";
         var markBlue = false;
         var needle = allClozes[i].orig;
-        if (i == currentCloze) {
+        if (allClozes[i].askAll)
+          replacement = "";
+        else if (i == currentCloze || allClozes[currentCloze].askAll) {
           markBlue = true;
           replacement = isBackSide ? allClozes[i].content : "[" + allClozes[i].placeholder + "]";
         } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes)
           replacement = allClozes[i].content;
-        else if (showAllClozes)
+        else if (showAllClozes && !allClozes[i].askAll)
           replacement = (isBackSide && revealAllClozes) ? allClozes[i].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].placeholder : "...") + "]";
         else {
           replacement = "";
