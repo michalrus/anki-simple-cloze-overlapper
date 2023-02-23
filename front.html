@@ -62,10 +62,11 @@
     }
 
     function delayedRender() {
-      window.setTimeout(render, 1);
+      if (window.requestAnimationFrame) window.requestAnimationFrame(render); // less flickering
+      else window.setTimeout(render, 0);
     };
 
-    window.onload = render;
+    window.onload = delayedRender();
     if (document.readyState === "complete") delayedRender();
     else document.addEventListener("DOMContentLoaded", delayedRender);
   })();
