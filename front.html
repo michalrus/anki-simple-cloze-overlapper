@@ -29,7 +29,10 @@
         var res = {};
         for (var i = 0; i < allMatches.length; i++) {
           var match = allMatches[i].match(/\{\{c(\d+)::(.*?)(::(.*?))?\}\}/);
-          res[+match[1]] = {orig: allMatches[i], content: match[2], placeholder: match[4] ? match[4] : "...", askAll: match[2] === "ask-all"};
+          res[+match[1]] = res[+match[1]] || {askAll: false, clozes: {}};
+          if (match[2] === "ask-all")
+            res[+match[1]].askAll = true;
+          res[+match[1]].clozes[allMatches[i]] = {content: match[2], placeholder: match[4] ? match[4] : "..."};
         }
         return res;
       })();
@@ -38,24 +41,26 @@
 
       var question = divOriginal.innerHTML;
       for (var i in allClozes) {
-        var replacement = "";
-        var markBlue = false;
-        var needle = allClozes[i].orig;
-        if (allClozes[i].askAll)
-          replacement = "";
-        else if (i == currentCloze || allClozes[currentCloze].askAll) {
-          markBlue = true;
-          replacement = isBackSide ? allClozes[i].content : "[" + allClozes[i].placeholder + "]";
-        } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes)
-          replacement = allClozes[i].content;
-        else if (showAllClozes && !allClozes[i].askAll)
-          replacement = (isBackSide && revealAllClozes) ? allClozes[i].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].placeholder : "...") + "]";
-        else {
-          replacement = "";
-          // Also get rid of following new lines, commas, dots, etc.
-          needle = new RegExp("\\{\\{c" + i + "::.*?\\}\\}(<br>|[\\s,.])*", "g");
+        for (var orig in allClozes[i].clozes) {
+          var replacement = "";
+          var markBlue = false;
+          var needle = orig;
+          if (allClozes[i].askAll)
+            replacement = "";
+          else if (i == currentCloze || allClozes[currentCloze].askAll) {
+            markBlue = true;
+            replacement = isBackSide ? allClozes[i].clozes[orig].content : "[" + allClozes[i].clozes[orig].placeholder + "]";
+          } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes)
+            replacement = allClozes[i].clozes[orig].content;
+          else if (showAllClozes && !allClozes[i].askAll)
+            replacement = (isBackSide && revealAllClozes) ? allClozes[i].clozes[orig].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].clozes[orig].placeholder : "...") + "]";
+          else {
+            replacement = "";
+            // Also get rid of following new lines, commas, dots, etc.
+            needle = new RegExp("\\{\\{c" + i + "::.*?\\}\\}(<br>|[\\s,.])*", "g");
+          }
+          question = question.replace(needle, (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : ""));
         }
-        question = question.replace(needle, (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : ""));
       }
 
       divJsRendered.innerHTML = question;
