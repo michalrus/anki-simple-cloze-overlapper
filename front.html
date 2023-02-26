@@ -29,10 +29,10 @@
       var currentCloze = +(document.body.className.match(/(^|\s)card(\d+)(\s|$)/)[2] || 0);
 
       var allClozes = (function(){
-        var allMatches = divOriginal.innerHTML.match(/\{\{c\d+::.*?\}\}/g);
+        var allMatches = divOriginal.innerHTML.match(/\{\{c\d+::[\s\S]*?\}\}/g);
         var res = {};
         for (var i = 0; i < allMatches.length; i++) {
-          var match = allMatches[i].match(/\{\{c(\d+)::(.*?)(::(.*?))?\}\}/);
+          var match = allMatches[i].match(/\{\{c(\d+)::([\s\S]*?)(::([\s\S]*?))?\}\}/);
           res[+match[1]] = res[+match[1]] || {askAll: false, clozes: {}};
           if (match[2] === "ask-all")
             res[+match[1]].askAll = true;
