@@ -6,6 +6,10 @@
 <script>
   // This ceremony makes sure the render function is run exactly once:
   (function() {
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
     var alreadyRendered = false;
 
     function render() {
@@ -44,7 +48,7 @@
         for (var orig in allClozes[i].clozes) {
           var replacement = "";
           var markBlue = false;
-          var needle = orig;
+          var needle = new RegExp(escapeRegExp(orig), "g");
           if (allClozes[i].askAll)
             replacement = "";
           else if (i == currentCloze || allClozes[currentCloze].askAll) {
@@ -57,9 +61,11 @@
           else {
             replacement = "";
             // Also get rid of following new lines, commas, dots, etc.
-            needle = new RegExp("\\{\\{c" + i + "::.*?\\}\\}(<br>|[\\s,.])*", "g");
+            needle = new RegExp(escapeRegExp(orig) + "(<br>|[\\s,.])*", "g");
           }
-          question = question.replace(needle, (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : ""));
+          question = question.replace(needle, function () {
+            return (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : "");
+          });
         }
       }
 
