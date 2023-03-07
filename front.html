@@ -26,7 +26,11 @@
       var divOriginal = document.getElementById("cloze-original");
       var divJsRendered = document.getElementById("cloze-js-rendered");
 
-      var currentCloze = +(document.body.className.match(/(^|\s)card(\d+)(\s|$)/)[2] || 0);
+      var currentCloze = +(
+          (document.body.className.match(/(^|\s)card(\d+)(\s|$)/) || [])[2] ||
+          ((document.getElementById("qa_box") && document.getElementById("qa_box").className && document.getElementById("qa_box").className.match(/(^|\s)card(\d+)(\s|$)/)) || [])[2] ||
+          0
+      );
 
       var allClozes = (function(){
         var allMatches = divOriginal.innerHTML.match(/\{\{c\d+::[\s\S]*?\}\}/g);
