@@ -1,3 +1,14 @@
-<div id="cloze-is-back" hidden="">{{cloze:Text}}</div>
-{{FrontSide}}
+<template id="anki-cloze">{{cloze:Text}}</template>
+<template id="cloze-config">{{Before|After|NonContext|RevelAll|InactiveHints}}</template>
+<template id="cloze-source">{{Text}}</template>
+<div id="rendered-cloze"></div>
 {{Back Extra}}
+
+<div>
+  <button id="reveal-all-button" hidden>Reveal All</button>
+</div>
+
+<script type="module">
+  import { renderClozes } from '/_cloze-overlapper.mjs';
+  window.requestAnimationFrame(_ => renderClozes());
+</script>

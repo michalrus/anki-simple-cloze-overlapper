@@ -1,88 +1,9 @@
-<div id="cloze-original" hidden="">{{Text}}</div>
-<div id="cloze-anki-rendered" hidden="">{{cloze:Text}}</div>
-<div id="cloze-overlapping-config" hidden="">{{Overlapping}}</div>
-<div id="cloze-js-rendered"></div>
+<template id="anki-cloze">{{cloze:Text}}</template>
+<template id="cloze-config">{{Before|After|NonContext|RevelAll|InactiveHints}}</template>
+<template id="cloze-source">{{Text}}</template>
+<div id="rendered-cloze"></div>
 
-<script>
-  // This ceremony makes sure the render function is run exactly once:
-  (function() {
-    function escapeRegExp(string) {
-      return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    }
-
-    var alreadyRendered = false;
-
-    function render() {
-      if (alreadyRendered) return;
-      alreadyRendered = true;
-
-      var config = document.getElementById("cloze-overlapping-config").innerText.split(/[,\s|.]+/);
-      var leadingClozes = config[0] === "0" ? 0 : (+config[0] || 1);
-      var followingClozes = +config[1] || 0;
-      var showAllClozes = (config[2] || "true").toLowerCase() === "true"; // Set to false to omit, e.g. for long lyrics/poems
-      var revealAllClozes = (config[3] || "false").toLowerCase() === "true"; // On the back, reveal other clozes we didnʼt ask for?
-      var revealAllCustomPlaceholders = (config[4] || "false").toLowerCase() === "true";
-
-      var divOriginal = document.getElementById("cloze-original");
-      var divJsRendered = document.getElementById("cloze-js-rendered");
-
-      var currentCloze = +(
-          (document.body.className.match(/(^|\s)card(\d+)(\s|$)/) || [])[2] ||
-          ((document.getElementById("qa_box") && document.getElementById("qa_box").className && document.getElementById("qa_box").className.match(/(^|\s)card(\d+)(\s|$)/)) || [])[2] ||
-          0
-      );
-
-      var allClozes = (function(){
-        var allMatches = divOriginal.innerHTML.match(/\{\{c\d+::[\s\S]*?\}\}/g);
-        var res = {};
-        for (var i = 0; i < allMatches.length; i++) {
-          var match = allMatches[i].match(/\{\{c(\d+)::([\s\S]*?)(::([\s\S]*?))?\}\}/);
-          res[+match[1]] = res[+match[1]] || {askAll: false, clozes: {}};
-          if (match[2] === "ask-all")
-            res[+match[1]].askAll = true;
-          res[+match[1]].clozes[allMatches[i]] = {content: match[2], placeholder: match[4] ? match[4] : "..."};
-        }
-        return res;
-      })();
-
-      var isBackSide = document.getElementById("cloze-is-back") ? true : false;
-
-      var question = divOriginal.innerHTML;
-      for (var i in allClozes) {
-        for (var orig in allClozes[i].clozes) {
-          var replacement = "";
-          var markBlue = false;
-          var needle = new RegExp(escapeRegExp(orig), "g");
-          if (allClozes[i].askAll)
-            replacement = "";
-          else if (i == currentCloze || allClozes[currentCloze].askAll) {
-            markBlue = true;
-            replacement = isBackSide ? allClozes[i].clozes[orig].content : "[" + allClozes[i].clozes[orig].placeholder + "]";
-          } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes)
-            replacement = allClozes[i].clozes[orig].content;
-          else if (showAllClozes && !allClozes[i].askAll)
-            replacement = (isBackSide && revealAllClozes) ? allClozes[i].clozes[orig].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].clozes[orig].placeholder : "...") + "]";
-          else {
-            replacement = "";
-            // Also get rid of following new lines, commas, dots, etc.
-            needle = new RegExp(escapeRegExp(orig) + "(<br>|[\\s,.])*", "g");
-          }
-          question = question.replace(needle, function () {
-            return (markBlue ? "<span class=\"cloze\">" : "") + replacement + (markBlue ? "</span>" : "");
-          });
-        }
-      }
-
-      divJsRendered.innerHTML = question;
-    }
-
-    function delayedRender() {
-      if (window.requestAnimationFrame) window.requestAnimationFrame(render); // less flickering
-      else window.setTimeout(render, 0);
-    };
-
-    window.onload = delayedRender();
-    if (document.readyState === "complete") delayedRender();
-    else document.addEventListener("DOMContentLoaded", delayedRender);
-  })();
+<script type="module">
+  import { renderClozes } from '/_cloze-overlapper.mjs';
+  window.requestAnimationFrame(_ => renderClozes());
 </script>

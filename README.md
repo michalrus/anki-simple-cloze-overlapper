@@ -5,6 +5,9 @@ Hey 👋
 I got a bit confused with the original [Cloze Overlapper](https://github.com/glutanimate/cloze-overlapper), and it felt a bit wrong to keep redundant information in our collections. The author also [keeps updates for Anki 2.1 behind a paywall](https://github.com/glutanimate/cloze-overlapper/issues/42#issuecomment-675031109).
 
 Here is a pure JavaScript version that you can paste into your card templates:
+* the JavaScript module responsible for rendering is in
+  [_cloze-overlapper.mjs](_cloze-overlapper.mjs), and it **must be put into** Anki's
+  [collection.media folder](https://docs.ankiweb.net/media.html#manually-adding-media),
 * the front side is in [front.html](front.html),
 * the back side is in [back.html](back.html).
 
@@ -18,7 +21,7 @@ Reddit thread: https://old.reddit.com/r/Anki/comments/116nky2/simple_cloze_overl
 
 ## Options (per note)
 
-A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from here, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called “Overlapping”.
+A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from here, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called `Before|After|NonContext|RevelAll|InactiveHints`.
 
 The options (separated by space, comma, pipe, etc.) are:
 
