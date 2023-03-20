@@ -1,5 +1,5 @@
 <template id="anki-cloze">{{cloze:Text}}</template>
-<template id="cloze-config">{{Before|After|NonContext|RevelAll|InactiveHints}}</template>
+<template id="cloze-config">{{Before|After|OnlyContext|RevelAll|InactiveHints}}</template>
 <template id="cloze-source">{{Text}}</template>
 <div id="rendered-cloze"></div>
 {{Back Extra}}
@@ -10,5 +10,5 @@
 
 <script type="module">
   import { renderClozes } from '/_cloze-overlapper.mjs';
-  window.requestAnimationFrame(_ => renderClozes());
+  renderClozes().then(requestAnimationFrame(() => {}));
 </script>

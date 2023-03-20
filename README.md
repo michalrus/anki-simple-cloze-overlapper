@@ -21,13 +21,13 @@ Reddit thread: https://old.reddit.com/r/Anki/comments/116nky2/simple_cloze_overl
 
 ## Options (per note)
 
-A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from here, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called `Before|After|NonContext|RevelAll|InactiveHints`.
+A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from here, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called `Before|After|OnlyContext|RevelAll|InactiveHints`.
 
 The options (separated by space, comma, pipe, etc.) are:
 
 1. (default: `1`) The number of leading clozes to uncover.
 2. (default: `0`) The number of following clozes.
-3. (default: `true`) Whether to show all clozes – set to false to omit them, e.g. for long lyrics/poems.
+3. (default: `false`) Whether to show only context (leading + cloze + following) – set to true for e.g. long lyrics/poems.
 4. (default: `false`) Whether to reveal all clozes on the back (the ones we didn't ask for).
 5. (default: `false`) Whether to reveal all user-defined hints (placeholders).
 
