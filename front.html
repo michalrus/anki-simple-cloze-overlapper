@@ -14,7 +14,6 @@
 
     function render() {
       if (alreadyRendered) return;
-      alreadyRendered = true;
 
       var config = document.getElementById("cloze-overlapping-config").innerText.split(/[,\s|.]+/);
       var leadingClozes = config[0] === "0" ? 0 : (+config[0] || 1);
@@ -73,6 +72,7 @@
         }
       }
 
+      alreadyRendered = true;
       divJsRendered.innerHTML = question;
     }
 
@@ -84,5 +84,17 @@
     window.onload = delayedRender();
     if (document.readyState === "complete") delayedRender();
     else document.addEventListener("DOMContentLoaded", delayedRender);
+
+    // Observe document.body class changes to trigger re-rendering.
+    // This is useful, because Anki doesn’t always start with an up-to-date class list:
+    // https://forums.ankiweb.net/t/card-card-classes-only-injected-separately-now/27387.
+    const observer = new MutationObserver(function(mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          delayedRender();
+        }
+      }
+    });
+    observer.observe(document.body, { attributes: true });
   })();
 </script>
