@@ -27,6 +27,7 @@ The options (separated by space, comma, pipe, etc.) are:
 3. (default: `true`) Whether to show all clozes – set to false to omit them, e.g. for long lyrics/poems.
 4. (default: `false`) Whether to reveal all clozes on the back (the ones we didn't ask for).
 5. (default: `false`) Whether to reveal all user-defined hints (placeholders).
+6. (default: `1`) How many clozes to ask for on a single card, e.g. Wozniak [suggests 3 per question in his (synthetic) alphabet example](https://super-memory.com/articles/20rules.htm#Enumerations).
 
 ## Card asking for all clozes
 
