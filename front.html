@@ -60,7 +60,7 @@
             replacement = isBackSide ? allClozes[i].clozes[orig].content : "[" + allClozes[i].clozes[orig].placeholder + "]";
           } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes + (clozesPerCard - 1))
             replacement = allClozes[i].clozes[orig].content;
-          else if (currentCloze - numHiddenClozes - 1 <= i && i <= currentCloze + numHiddenClozes + clozesPerCard && !allClozes[i].askAll)
+          else if (currentCloze - numHiddenClozes - leadingClozes <= i && i <= currentCloze + numHiddenClozes + clozesPerCard + followingClozes - 1 && !allClozes[i].askAll)
             replacement = (isBackSide && revealAllClozes) ? allClozes[i].clozes[orig].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].clozes[orig].placeholder : "...") + "]";
           else {
             replacement = "";
