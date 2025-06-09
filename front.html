@@ -18,7 +18,7 @@
       var config = document.getElementById("cloze-overlapping-config").innerText.split(/[,\s|.]+/);
       var leadingClozes = config[0] === "0" ? 0 : (+config[0] || 1);
       var followingClozes = +config[1] || 0;
-      var numHiddenClozes = config[2].toLowerCase() === "true" ? 9999999 : (+config[2] || 0); // Set to false or 0 to omit, e.g. for long lyrics/poems; set to 1 to suggest there’s more on the middle cards.
+      var numHiddenClozes = (config[2] || "true").toLowerCase() === "true" ? 9999999 : (+config[2] || 0); // Set to false or 0 to omit, e.g. for long lyrics/poems; set to 1 to suggest there’s more on the middle cards.
       var revealAllClozes = (config[3] || "false").toLowerCase() === "true"; // On the back, reveal other clozes we didnʼt ask for?
       var revealAllCustomPlaceholders = (config[4] || "false").toLowerCase() === "true";
       var clozesPerCard = +config[5] || 1; // How many clozes to ask for each time? Wozniak suggests 3 for alphabet.
