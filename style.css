@@ -1,0 +1,26 @@
+.note-box {
+  width: 60%;
+  margin: 0em auto;
+  border: 0.2em solid black;
+  border-radius: 1em;
+  font-size: 0.9em;
+  color: black;
+  font-weight: bold;
+  background-color: lightgray;
+  text-align: left;
+}
+
+.note-header {
+  display: block;
+  color: black;
+  background-color: darkgray;
+  border-radius: 0.8em 0.8em 0em 0em;
+  font-weight: bold;
+  border-bottom: 0.15em solid black;
+  font-weight: bold;
+  padding: 0.4em 0.6em;
+}
+
+.note-box p {
+  margin: 0.8em;
+}
