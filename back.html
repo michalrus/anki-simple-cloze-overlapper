@@ -12,10 +12,10 @@
 
     const noteBox = document.querySelector(".note-box");
 
-    const noteText = noteBox.innerText.trim();
-    if (noteText.length == 0) return;
+    const noteContent = noteBox.innerHTML.trim();
+    if (noteContent.length == 0) return;
 
-    const notes = noteText.split("|||");
+    const notes = noteContent.split("|||");
 
     for (let i = 0; i < notes.length; i++) {
       note = notes[i];
@@ -25,7 +25,7 @@
       ) {
         const noteText = note.replace(`C${cardOrd}::`, "");
         noteBox.innerHTML =
-          "<span class='note-header'>NOTE</span><p>" + noteText + "</p>";
+          "<span class='note-header'>NOTE</span><p>" + noteContent + "</p>";
         noteBox.hidden = false;
         return;
       }
