@@ -1,3 +1,34 @@
 <div id="cloze-is-back" hidden="">{{cloze:Text}}</div>
 {{FrontSide}}
-{{Back Extra}}
+
+<br /><br />
+
+<div class="note-box" hidden="">{{Back Extra}}</div>
+
+<script>
+  (function applyNotes() {
+    const activeCloze = document.querySelector(".cloze");
+    const cardOrd = activeCloze.getAttribute("data-ordinal");
+
+    const noteBox = document.querySelector(".note-box");
+
+    const noteText = noteBox.innerText.trim();
+    if (noteText.length == 0) return;
+
+    const notes = noteText.split("|||");
+
+    for (let i = 0; i < notes.length; i++) {
+      note = notes[i];
+      if (
+        (note.trim() && note.trim()[0] !== "C") ||
+        note.match(`^C${cardOrd}::`)
+      ) {
+        const noteText = note.replace(`C${cardOrd}::`, "");
+        noteBox.innerHTML =
+          "<span class='note-header'>NOTE</span><p>" + noteText + "</p>";
+        noteBox.hidden = false;
+        return;
+      }
+    }
+  })();
+</script>

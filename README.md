@@ -5,8 +5,9 @@ Hey 👋
 I got a bit confused with the original [Cloze Overlapper](https://github.com/glutanimate/cloze-overlapper), and it felt a bit wrong to keep redundant information in our collections. The author also [keeps updates for Anki 2.1 behind a paywall](https://github.com/glutanimate/cloze-overlapper/issues/42#issuecomment-675031109).
 
 Here is a pure JavaScript version that you can paste into your card templates:
-* the front side is in [front.html](front.html),
-* the back side is in [back.html](back.html).
+
+- the front side is in [front.html](front.html),
+- the back side is in [back.html](back.html).
 
 ![screen-recording](screen-recording.gif)
 
@@ -32,3 +33,25 @@ The options (separated by space, comma, pipe, etc.) are:
 ## Card asking for all clozes
 
 If you need an extra card that asks you for all the clozes at once, add another cloze with an unused number and `ask-all` in its content. E.g. `{{c99::ask-all}}` – as in the recording (thanks to `/u/Spiritual_Issue7174`).
+
+## Custom Notes Applier
+
+Thanks to the Overlapper, I was able to create semi indepenet cloze cards from each note without a child card interfering with the others (exposing their content), but soon I faced the proplem that my "Notes" (text in Back Extra field) become irrelevant to some child cards as the overlapper hide the cloze gaps related to them, So I wrote this small function that allowed me to apply different notes for different child cards seamlessly.
+the usage is pretty simple:
+
+1. to apply a note to all child cards: just write it directly into `Back Extra` field.
+2. to apply a note to a Card, insert C[$card_number]::$your_note_text, for example to add a note that says: "This is card 3" to card 3, write: `C3::This is card 3`.
+3. delimiterise different notes with `|||`, example:
+   C1::This is card 1|||
+   C2::This is card 2|||
+   C3::This is card 3
+
+For more clarification watch this video:
+
+![Preview](https://imgur.com/a/fuv553A.gif)
+
+- Tested on: Ankidroid.
+
+- TODO: Add the ability to add the note to multiple cards by starting the note with: C[1,2,3]:: for example.
+
+- Note: [style.css](style.css) contains the css code to get the note box looks like the screen recording.
