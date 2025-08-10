@@ -25,11 +25,8 @@
     const notes = noteBoxContent.split("|||");
 
     for (let i = 0; i < notes.length; i++) {
-      note = notes[i];
-      if (
-        (note.trim() && note.trim()[0] !== "C") ||
-        note.match(`^C${cardOrd}::`)
-      ) {
+      note = notes[i].trim().replaceAll("<br>", "");
+      if ((note && note[0] !== "C") || note.match(`^C${cardOrd}::`)) {
         const noteContent = note.replace(`C${cardOrd}::`, "");
         noteBox.innerHTML =
           "<span class='note-header'>NOTE</span><p>" + noteContent + "</p>";
