@@ -9,14 +9,14 @@
 {{FrontSide}}
 
 <br /><br />
-
-<div class="note-box" hidden="">{{Back Extra}}</div>
+<div class="notes-container">
+  <div class="note-box" hidden="">{{Back Extra}}</div>
+</div>
 
 <script>
   (function applyNotes() {
     const activeCloze = document.querySelector(".cloze");
     const cardOrd = activeCloze.getAttribute("data-ordinal");
-
     const noteBox = document.querySelector(".note-box");
 
     const noteBoxContent = noteBox.innerHTML.trim();
@@ -25,13 +25,23 @@
     const notes = noteBoxContent.split("|||");
 
     for (let i = 0; i < notes.length; i++) {
-      note = notes[i].trim().replaceAll("<br>", "");
-      if ((note && note[0] !== "C") || note.match(`^C${cardOrd}::`)) {
-        const noteContent = note.replace(`C${cardOrd}::`, "");
+      note = notes[i].trim().replace(/^[<br>\s]+/, "");
+      if (
+        (note && !noteBoxContent.match(/C\d+?::/)) ||
+        note.match(`^C${cardOrd}::`)
+      ) {
+        let noteContent = note.replace(`C${cardOrd}::`, "");
+        noteContent = noteContent.replace("G::", "");
         noteBox.innerHTML =
           "<span class='note-header'>NOTE</span><p>" + noteContent + "</p>";
         noteBox.hidden = false;
-        return;
+      } else if (note.match("^G::")) {
+        const g_noteContent = note.replace(`G::`, "");
+        var g_note = document.createElement("div");
+        g_note.setAttribute("class", "note-box");
+        g_note.innerHTML = `<span class='note-header'>NOTE</span><p>${g_noteContent}</p>`;
+        const notes_container = document.querySelector(".notes-container");
+        notes_container.appendChild(g_note);
       }
     }
   })();
