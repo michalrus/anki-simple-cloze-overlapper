@@ -22,6 +22,7 @@
       var revealAllClozes = (config[3] || "false").toLowerCase() === "true"; // On the back, reveal other clozes we didnʼt ask for?
       var revealAllCustomPlaceholders = (config[4] || "false").toLowerCase() === "true";
       var clozesPerCard = +config[5] || 1; // How many clozes to ask for each time? Wozniak suggests 3 for alphabet.
+      var showNextClozesInAnswer = (config[6] === undefined || config[6] === "") ? 0 : (+config[6] || 0); // On the back, show N next clozes in parentheses.
 
       var divOriginal = document.getElementById("cloze-original");
       var divJsRendered = document.getElementById("cloze-js-rendered");
@@ -60,6 +61,8 @@
             replacement = isBackSide ? allClozes[i].clozes[orig].content : "[" + allClozes[i].clozes[orig].placeholder + "]";
           } else if (currentCloze - leadingClozes <= i && i <= currentCloze + followingClozes + (clozesPerCard - 1))
             replacement = allClozes[i].clozes[orig].content;
+          else if (isBackSide && showNextClozesInAnswer > 0 && currentCloze + clozesPerCard <= i && i < currentCloze + clozesPerCard + showNextClozesInAnswer && !allClozes[i].askAll)
+            replacement = "(" + allClozes[i].clozes[orig].content + ")";
           else if (currentCloze - numHiddenClozes - leadingClozes <= i && i <= currentCloze + numHiddenClozes + clozesPerCard + followingClozes - 1 && !allClozes[i].askAll)
             replacement = (isBackSide && revealAllClozes) ? allClozes[i].clozes[orig].content : "[" + (revealAllCustomPlaceholders ? allClozes[i].clozes[orig].placeholder : "...") + "]";
           else {

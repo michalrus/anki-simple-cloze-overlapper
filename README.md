@@ -40,6 +40,7 @@ The options (separated by space, comma, pipe, etc.) are:
 4. (default: `false`) Whether to reveal all clozes on the back (the ones we didn't ask for).
 5. (default: `false`) Whether to reveal all user-defined hints (placeholders).
 6. (default: `1`) How many clozes to ask for on a single card, e.g. Wozniak [suggests 3 per question in his (synthetic) alphabet example](https://super-memory.com/articles/20rules.htm#Enumerations).
+7. (default: `0`) Only on the back, show the next N clozes in parentheses (when this setting is greater than the number of following clozes).
 
 ## Card asking for all clozes
 
