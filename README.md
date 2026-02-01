@@ -16,6 +16,18 @@ I hope the recording will be self-explanatory! The last two modes seem odd to me
 
 Reddit thread: https://old.reddit.com/r/Anki/comments/116nky2/simple_cloze_overlapper_template_for_anki_21/
 
+## Setup
+
+1. Click Tools → Manage Note Types.
+2. Click Add → Add: Cloze.
+3. Give it a name, like “Cloze Overlapper”.
+4. Click Fields → Add.
+5. Name the field “Overlapping”.
+6. Click Save → Cards.
+7. Replace the text in the Front Template with the text from [`front.html`](front.html).
+8. Click Back Template, replace the text with the text from [`back.html`](back.html).
+9. Click Save.
+
 ## Options (per note)
 
 A good idea is to create a new note type (based on Cloze), e.g. “Cloze (overlapping)”, copy the front and back templates from here, and add a new field to it to control the behavior per each note. The templates below assume that the field will be called “Overlapping”.
