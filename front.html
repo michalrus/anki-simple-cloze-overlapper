@@ -75,6 +75,16 @@
 
       alreadyRendered = true;
       divJsRendered.innerHTML = question;
+
+      // Scroll to cloze for long lists:
+      var activeCloze = divJsRendered.querySelector(".cloze");
+      if (activeCloze && activeCloze.scrollIntoView) {
+        try {
+          activeCloze.scrollIntoView({block: "center", inline: "nearest"});
+        } catch (e) {
+          activeCloze.scrollIntoView(true);
+        }
+      }
     }
 
     function delayedRender() {
